@@ -61,7 +61,7 @@ public:
     // Contrat :
     //
 
-    float distanceto (const Coordinates & unCoordinates);
+    float distanceto (const Coordinates unCoordinates);
     // Mode d'emploi :
     // vérifie si dans ce TimeStamp est compris le startDate et le endDate
     // Contrat :
