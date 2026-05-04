@@ -3,9 +3,9 @@
 #include <list>
 
 #include "Controleur.h"
-#include "Agency.h"
-#include "Sensor.h"
-#include "Period.h"
+#include "../Model/Agency.h"
+#include "../Model/Sensor.h"
+#include "../TypeUtil/Period.h"
 
 class ControleurAgence : public Controleur {
 public:

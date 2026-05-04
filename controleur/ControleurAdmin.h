@@ -2,8 +2,8 @@
 #define CONTROLEURADMIN_H
 
 #include "Controleur.h"
-#include "User.h"
-#include "Admin.h"
+#include "../Model/User.h"
+#include "../Model/Admin.h"
 
 class ControleurAdmin : public Controleur {
 public:

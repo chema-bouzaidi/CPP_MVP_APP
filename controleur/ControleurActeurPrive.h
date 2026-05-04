@@ -2,8 +2,8 @@
 #define CONTROLEURACTEURPRIVE_H
 
 #include "Controleur.h"
-#include "PrivateIndividual.h"
-#include "PrivateSensor.h"
+#include "../Model/PrivateIndividual.h"
+#include "../Model/PrivateSensor.h"
 
 class ControleurActeurPrive : public Controleur {
 public:

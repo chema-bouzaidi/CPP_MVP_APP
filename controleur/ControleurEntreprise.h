@@ -2,8 +2,8 @@
 #define CONTROLEURENTREPRISE_H
 #include "Controleur.h"
 
-#include "ExternalCompany.h"
-#include "Agency.h"
+#include "../Model/ExternalCompany.h"
+#include "../Model/Agency.h"
 #include "Statistics.h"
 
 class ControleurEntreprise : public Controleur {
