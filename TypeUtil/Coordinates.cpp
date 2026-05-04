@@ -16,6 +16,7 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "Coordinates.h"
+#include <cmath>
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
@@ -66,7 +67,7 @@ Coordinates::~Coordinates ( )
 #endif
 } //----- Fin de ~Coordinates
 
-float Coordinates::distanceto (const Coordinates unCoordinates)
+float Coordinates::distanceto (const Coordinates & unCoordinates)
 {
     // on multiplie par 111 et par 77 par en France 1 degre de latitude est  environ egal a 111km
     // et un degre de longitude vaut environ 77 km (sinon on aurait la distance en degrés)
