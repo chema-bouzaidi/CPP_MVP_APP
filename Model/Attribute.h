@@ -3,22 +3,19 @@
 
 #include <string>
 
-using namespace std;
+class Attribute
+{
+private:
+    std::string attributeId;
+    std::string name;
+    std::string unit;
+public:
+    Attribute(std::string id, std::string name, std::string unit);
+    Attribute();
 
-class Attribute{
-    private:
-        string attributeID;
-        string name;
-        string unit;
-    
-    public :
-    //constructeur
-    Attribute(string id, string name , string unit);
-
-    // getters 
-    string getAttributeId;
-    string getName;
-    string getUnit;
+    std::string getAttributeId() const;
+    std::string getName() const;
+    std::string getUnit() const;
 };
 
-#endif
+#endif // ATTRIBUTE_H

@@ -1,19 +1,10 @@
 #include "Attribute.h"
-//constructeur
-Attribute::Attribute(string id, sting name, string unit){
-    this->attributeId =id;
-    this->name = name;
-    this->unit = unit;
-}
 
-//getter
-string Attribute::getAttributeId(){
-    return attributeId;
-}
-string Attribute:: getName(){
-       return name;
-}
+Attribute::Attribute(std::string id, std::string n, std::string u)
+    : attributeId(id), name(n), unit(u) {}
 
-string Attribute::getUnit(){
-    return unit;
-}
+Attribute::Attribute() : attributeId(""), name(""), unit("") {}
+
+std::string Attribute::getAttributeId() const { return attributeId; }
+std::string Attribute::getName() const         { return name; }
+std::string Attribute::getUnit() const         { return unit; }

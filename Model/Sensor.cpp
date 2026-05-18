@@ -1,63 +1,54 @@
-//---------- Réalisation de la classe <Sensor> (fichier Sensor.cpp) ----------------
-
 #include "Sensor.h"
 
-//----------------------------------------------------------------- PUBLIC
-
-//------------------------------------------------- Surcharge d'opérateurs
-Sensor & Sensor::operator = ( const Sensor & unSensor )
+Sensor & Sensor::operator=(const Sensor& s)
 {
-    if ( this != &unSensor )
+    if (this != &s)
     {
-        sensorId     = unSensor.sensorId;
-        latitude     = unSensor.latitude;
-        longitude    = unSensor.longitude;
-        isFunctional = unSensor.isFunctional;
+        sensorId     = s.sensorId;
+        latitude     = s.latitude;
+        longitude    = s.longitude;
+        isFunctional = s.isFunctional;
     }
     return *this;
 }
 
-//-------------------------------------------- Constructeurs - destructeur
-Sensor::Sensor ( const Sensor & unSensor )
-    : sensorId( unSensor.sensorId ),
-      latitude( unSensor.latitude ),
-      longitude( unSensor.longitude ),
-      isFunctional( unSensor.isFunctional )
+Sensor::Sensor(const Sensor& s)
+    : sensorId(s.sensorId), latitude(s.latitude),
+      longitude(s.longitude), isFunctional(s.isFunctional) {}
+
+Sensor::Sensor(std::string id, float lat, float lon)
+    : sensorId(id), latitude(lat), longitude(lon), isFunctional(true) {}
+
+Sensor::Sensor()
+    : sensorId(""), latitude(0.0f), longitude(0.0f), isFunctional(true) {}
+
+Sensor::~Sensor() {}
+
+std::list<Measurement> Sensor::getMeasurements(const Period& periode) const
 {
+    std::list<Measurement> result;
+    for (Measurement* m : measurements)
+    {
+        if (periode.contains(m->getTimestamp()))
+            result.push_back(*m);
+    }
+    return result;
 }
 
-Sensor::Sensor ( std::string sensorId, float latitude, float longitude )
-    : sensorId( sensorId ),
-      latitude( latitude ),
-      longitude( longitude ),
-      isFunctional( true )
+Coordinates Sensor::getPosition() const
 {
+    return Coordinates(latitude, longitude);
 }
 
-Sensor::Sensor ( )
-    : sensorId( "" ),
-      latitude( 0.0f ),
-      longitude( 0.0f ),
-      isFunctional( true )
-{
-}
+std::string Sensor::getSensorId() const    { return sensorId; }
+bool        Sensor::getIsFunctional() const { return isFunctional; }
 
-Sensor::~Sensor ( )
-{
-}
-
-//------------------------------------------------------- Méthodes publiques
-std::list<Measurement> Sensor::getMeasurements ( Period periode )
-{
-    
-}
-
-Coordinates Sensor::getPosition ( )
-{
-    
-}
-
-void Sensor::markDefective ( )
+void Sensor::markDefective()
 {
     isFunctional = false;
+}
+
+void Sensor::addMeasurement(Measurement* m)
+{
+    measurements.push_back(m);
 }

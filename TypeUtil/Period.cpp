@@ -1,81 +1,33 @@
-/*************************************************************************
-                           Period  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
-
-//---------- Réalisation de la classe <Period> (fichier Period.cpp) ------------
-
-//---------------------------------------------------------------- INCLUDE
-
-//-------------------------------------------------------- Include système
-#include <iostream>
-using namespace std;
-
-//------------------------------------------------------ Include personnel
 #include "Period.h"
-#include "TimeStamp.h"
-//------------------------------------------------------------- Constantes
 
-//----------------------------------------------------------------- PUBLIC
-
-//----------------------------------------------------- Méthodes publiques
-// type Period::Méthode ( liste des paramètres )
-// Algorithme :
-//
-//{
-//} //----- Fin de Méthode
-
-
-//------------------------------------------------- Surcharge d'opérateurs
-Period & Period::operator = ( const Period & unePeriod )
-// Algorithme :
-//
+Period & Period::operator=(const Period& p)
 {
-} //----- Fin de operator =
+    if (this != &p) { startDate = p.startDate; endDate = p.endDate; }
+    return *this;
+}
 
+Period::Period(const Period& p) : startDate(p.startDate), endDate(p.endDate) {}
 
-//-------------------------------------------- Constructeurs - destructeur
-Period::Period ( const Period & unePeriod )
-// Algorithme :
-//
+Period::Period() : startDate(""), endDate("") {}
+
+Period::Period(TimeStamp start, TimeStamp end) : startDate(start), endDate(end) {}
+
+Period::~Period() {}
+
+TimeStamp Period::getStartDate() const { return startDate; }
+TimeStamp Period::getEndDate() const   { return endDate; }
+
+bool Period::contains(const TimeStamp& t) const
 {
-#ifdef MAP
-    cout << "Appel au constructeur de copie de <Period>" << endl;
-#endif
-} //----- Fin de Period (constructeur de copie)
+    return (startDate <= t) && (t <= endDate);
+}
 
-
-Period::Period ( )
-// Algorithme :
-//
+bool Period::contains(const TimeStamp& tStart, const TimeStamp& tEnd) const
 {
-#ifdef MAP
-    cout << "Appel au constructeur de <Period>" << endl;
-#endif
-} //----- Fin de Period
+    return (startDate <= tStart) && (endDate >= tEnd);
+}
 
-
-Period::~Period ( )
-// Algorithme :
-//
+bool Period::overlaps(const Period& other) const
 {
-#ifdef MAP
-    cout << "Appel au destructeur de <Period>" << endl;
-#endif
-} //----- Fin de ~Period
-
-bool Period::contains (TimeStamp tStart, TimeStamp tEnd)
-{
-    bool start_apres = (this->startDate >= tStart);
-    bool end_avant = (this->endDate <= tEnd);
-
-    return (start_apres && end_avant);
-} 
-
-
-//------------------------------------------------------------------ PRIVE
-
-//----------------------------------------------------- Méthodes protégées
+    return (startDate <= other.endDate) && (endDate >= other.startDate);
+}

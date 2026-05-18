@@ -24,7 +24,11 @@ class PrivateIndividual: public User
 
 public:
 //----------------------------------------------------- Méthodes publiques
-
+    std::string getSensorId() const;
+    int  getPoints() const;
+    bool getIsReliable() const;
+    void addPoints(int n);
+    void ban();
 
 //------------------------------------------------- Surcharge d'opérateurs
     PrivateIndividual & operator = ( const PrivateIndividual & unPrivateIndividual );
@@ -41,7 +45,8 @@ public:
     // Contrat :
     //
 
-    PrivateIndividual (  std::string userId, std::string password, std::string role, std::string privateId, int points );
+    PrivateIndividual (std::string userId, std::string password, std::string role,
+                       std::string privateId, int points, std::string sensorId = "");
     // Mode d'emploi :
     //
     // Contrat :
@@ -63,6 +68,7 @@ public:
 
 protected:
     std::string privateId;
+    std::string sensorId;
     int points;
     bool isReliable;
 

@@ -1,21 +1,28 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
-#include "Coordinates.h"
-#include "Period.h"
+#include <string>
+#include "../TypeUtil/Coordinates.h"
+#include "../TypeUtil/Period.h"
 
-class Statistics {
+class Statistics
+{
 private:
     Coordinates center;
-    float radius;
-    Period period;
-    int mode;
+    float       radius;
+    Period      period;
+    int         mode;
+    float       result;
+    std::string description;
 
 public:
-    Statistics(const Coordinates& c, float r, const Period& p, int m);
+    Statistics(const Coordinates& c, float r, const Period& p,
+               int mode, float result, const std::string& desc);
+    Statistics();
 
-    void generate();
-    void display() const;
+    float       getResult() const;
+    std::string getDescription() const;
+    void        display() const;
 };
 
-#endif
+#endif // STATISTICS_H

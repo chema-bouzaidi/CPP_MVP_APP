@@ -1,83 +1,34 @@
-
-//---------- Interface de la classe <Sensor> (fichier Sensor.h) ----------------
-#if ! defined ( SENSOR_H )
+#if !defined(SENSOR_H)
 #define SENSOR_H
-
 
 #include <string>
 #include <list>
 #include "Measurement.h"
 #include "../TypeUtil/Period.h"
 #include "../TypeUtil/Coordinates.h"
-//--------------------------------------------------- Interfaces utilisées
-
-//------------------------------------------------------------- Constantes
-
-//------------------------------------------------------------------ Types
-
-//------------------------------------------------------------------------
-// Rôle de la classe <Sensor>
-//
-//
-//------------------------------------------------------------------------
 
 class Sensor
 {
-//----------------------------------------------------------------- PUBLIC
-
 public:
-//----------------------------------------------------- Méthodes publiques
-    std::list<Measurement> getMeasurements(Periode periode);
-
-    Coordinates getPosition();
-    
+    std::list<Measurement> getMeasurements(const Period& periode) const;
+    Coordinates getPosition() const;
+    std::string getSensorId() const;
+    bool getIsFunctional() const;
     void markDefective();
+    void addMeasurement(Measurement* m);
 
-
-//------------------------------------------------- Surcharge d'opérateurs
-    Sensor & operator = ( const Sensor & unSensor );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-
-//-------------------------------------------- Constructeurs - destructeur
-    Sensor ( const Sensor & unSensor );
-    // Mode d'emploi (constructeur de copie) :
-    //
-    // Contrat :
-    //
-
-    Sensor ( std::string sensorId, float latitude, float longitude );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-    Sensor ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-    virtual ~Sensor ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-//------------------------------------------------------------------ PRIVE
+    Sensor & operator=(const Sensor& s);
+    Sensor(const Sensor& s);
+    Sensor(std::string sensorId, float latitude, float longitude);
+    Sensor();
+    virtual ~Sensor();
 
 protected:
     std::string sensorId;
     float latitude;
     float longitude;
     bool isFunctional;
-
+    std::list<Measurement*> measurements;
 };
 
-//-------------------------------- Autres définitions dépendantes de <Sensor>
-
 #endif // SENSOR_H
-

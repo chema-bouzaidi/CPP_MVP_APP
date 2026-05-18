@@ -1,81 +1,28 @@
-/*************************************************************************
-                           Coordinates  -  description
-                             -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
-*************************************************************************/
-
-//---------- Réalisation de la classe <Coordinates> (fichier Coordinates.cpp) ------------
-
-//---------------------------------------------------------------- INCLUDE
-
-//-------------------------------------------------------- Include système
-#include <iostream>
-using namespace std;
-
-//------------------------------------------------------ Include personnel
 #include "Coordinates.h"
 #include <cmath>
-//------------------------------------------------------------- Constantes
 
-//----------------------------------------------------------------- PUBLIC
-
-//----------------------------------------------------- Méthodes publiques
-// type Coordinates::Méthode ( liste des paramètres )
-// Algorithme :
-//
-//{
-//} //----- Fin de Méthode
-
-
-//------------------------------------------------- Surcharge d'opérateurs
-Coordinates & Coordinates::operator = ( const Coordinates & uneCoordinates )
-// Algorithme :
-//
+Coordinates & Coordinates::operator=(const Coordinates& c)
 {
-} //----- Fin de operator =
+    if (this != &c) { latitude = c.latitude; longitude = c.longitude; }
+    return *this;
+}
 
+Coordinates::Coordinates(const Coordinates& c)
+    : latitude(c.latitude), longitude(c.longitude) {}
 
-//-------------------------------------------- Constructeurs - destructeur
-Coordinates::Coordinates ( const Coordinates & uneCoordinates )
-// Algorithme :
-//
+Coordinates::Coordinates() : latitude(0.0f), longitude(0.0f) {}
+
+Coordinates::Coordinates(float lat, float lon) : latitude(lat), longitude(lon) {}
+
+Coordinates::~Coordinates() {}
+
+float Coordinates::getLatitude() const  { return latitude; }
+float Coordinates::getLongitude() const { return longitude; }
+
+float Coordinates::distanceTo(const Coordinates& c) const
 {
-#ifdef MAP
-    cout << "Appel au constructeur de copie de <Coordinates>" << endl;
-#endif
-} //----- Fin de Coordinates (constructeur de copie)
-
-
-Coordinates::Coordinates ( )
-// Algorithme :
-//
-{
-#ifdef MAP
-    cout << "Appel au constructeur de <Coordinates>" << endl;
-#endif
-} //----- Fin de Coordinates
-
-
-Coordinates::~Coordinates ( )
-// Algorithme :
-//
-{
-#ifdef MAP
-    cout << "Appel au destructeur de <Coordinates>" << endl;
-#endif
-} //----- Fin de ~Coordinates
-
-float Coordinates::distanceto (const Coordinates & unCoordinates)
-{
-    // on multiplie par 111 et par 77 par en France 1 degre de latitude est  environ egal a 111km
-    // et un degre de longitude vaut environ 77 km (sinon on aurait la distance en degrés)
-    float dy = (this->latitude - unCoordinates.latitude) * 111.0f;
-    float dx = (this->longitude - unCoordinates.longitude) * 77.0f;
-
+    // 1 degree latitude ≈ 111 km, 1 degree longitude ≈ 77 km (France)
+    float dy = (latitude  - c.latitude)  * 111.0f;
+    float dx = (longitude - c.longitude) * 77.0f;
     return std::sqrt(dx*dx + dy*dy);
 }
-//------------------------------------------------------------------ PRIVE
-
-//----------------------------------------------------- Méthodes protégées

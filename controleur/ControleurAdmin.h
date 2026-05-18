@@ -7,15 +7,15 @@
 
 class ControleurAdmin : public Controleur {
 public:
-    ControleurAdmin(InterfaceUtilisateur& vue, Modele& modele)
-        : Controleur(vue, modele) {}
+    ControleurAdmin(InterfaceUtilisateur& vue, Modele& modele, User* user)
+        : Controleur(vue, modele), currentUser(user) {}
 
     void run();
     void createUser(const User& user);
     void deleteUser(const User& user);
     void banUser(const User& user);
 protected:
-    Admin currentAdmin;
+    User* currentUser;
 };
 
 #endif

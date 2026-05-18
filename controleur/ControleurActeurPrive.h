@@ -7,14 +7,15 @@
 
 class ControleurActeurPrive : public Controleur {
 public:
-    ControleurActeurPrive(InterfaceUtilisateur& vue, Modele& modele)
-        : Controleur(vue, modele) {}
+    ControleurActeurPrive(InterfaceUtilisateur& vue, Modele& modele,
+                          PrivateIndividual* user)
+        : Controleur(vue, modele), currentUser(user) {}
 
     void run();
     void consultPoints();
-    void consultSensorMeasurements(const PrivateSensor& sensor);
+    void consultSensorMeasurements();
 protected:
-    PrivateIndividual currentUser;
+    PrivateIndividual* currentUser;
 };
 
 #endif

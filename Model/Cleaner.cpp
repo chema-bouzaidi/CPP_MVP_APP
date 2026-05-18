@@ -27,23 +27,28 @@ Cleaner::Cleaner ( const Cleaner & unCleaner )
       stopTime( unCleaner.stopTime )
 {}
 
-Cleaner::Cleaner ( )
-    : cleanerId( "" ),
-      latitude( 0.0f ),
-      longitude( 0.0f )
-{}
+Cleaner::Cleaner(std::string id, float lat, float lon,
+                 TimeStamp start, TimeStamp stop)
+    : cleanerId(id), latitude(lat), longitude(lon),
+      startTime(start), stopTime(stop) {}
+
+Cleaner::Cleaner()
+    : cleanerId(""), latitude(0.0f), longitude(0.0f) {}
 
 Cleaner::~Cleaner ( )
 {
 }
 
 //------------------------------------------------------- Méthodes publiques
-float Cleaner::getCleanerRadius ( )
-{
+float Cleaner::getCleanerRadius() const { return 5.0f; }  // 5 km radius of effect
 
+bool Cleaner::isActiveAt(const TimeStamp& time) const
+{
+    return (startTime <= time) && (time <= stopTime);
 }
 
-bool Cleaner::isActiveAt ( TimeStamp time )
-{
-
-}
+std::string Cleaner::getCleanerId() const { return cleanerId; }
+float       Cleaner::getLatitude() const  { return latitude; }
+float       Cleaner::getLongitude() const { return longitude; }
+TimeStamp   Cleaner::getStartTime() const { return startTime; }
+TimeStamp   Cleaner::getStopTime() const  { return stopTime; }

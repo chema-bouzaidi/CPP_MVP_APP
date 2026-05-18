@@ -2,21 +2,21 @@
 #define CONTROLEURENTREPRISE_H
 #include "Controleur.h"
 
-#include "../Model/ExternalCompany.h"
-#include "../Model/Agency.h"
-#include "Statistics.h"
+#include "../Model/Provider.h"
+#include "../Model/Cleaner.h"
+#include "../Model/Statistics.h"
 
 class ControleurEntreprise : public Controleur {
 public:
-    ControleurEntreprise(InterfaceUtilisateur& vue, Modele& modele)
-        : Controleur(vue, modele) {}
+    ControleurEntreprise(InterfaceUtilisateur& vue, Modele& modele, User* user)
+        : Controleur(vue, modele), currentUser(user) {}
 
     void run();
     Statistics analyzeCleanerImpact(const Cleaner& cleaner);
     Statistics getCleanedRadius(const Cleaner& cleaner);
     Statistics getImprovementLevel(const Cleaner& cleaner);
-protected: 
-    ExternalCompany currentCompany;
+protected:
+    User* currentUser;
 
 };
 

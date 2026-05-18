@@ -1,23 +1,13 @@
 #include "Measurement.h"
-Measurement::Measurement(time_t timestamp,string sensorId,string asstributeId, float value){
-    this->timestamp = timestamp:
-    this->sensorID = sensorId;
-    this->attributeID = attributeId;
 
-}
+Measurement::Measurement(const TimeStamp& ts, const std::string& sId,
+                         const std::string& aId, float v)
+    : timestamp(ts), sensorId(sId), attributeId(aId), value(v) {}
 
-float Measurement::getValue() {
-    return value;
-}
+Measurement::Measurement()
+    : timestamp(), sensorId(""), attributeId(""), value(0.0f) {}
 
-time_t Measurement::getTimestamp() {
-    return timestamp;
-}
-
-string Measurement::getSensorId() {
-    return sensorID;
-}
-
-string Measurement::getAttributeId() {
-    return attributeID;
-}
+TimeStamp   Measurement::getTimestamp()   const { return timestamp; }
+std::string Measurement::getSensorId()    const { return sensorId; }
+std::string Measurement::getAttributeId() const { return attributeId; }
+float       Measurement::getValue()       const { return value; }

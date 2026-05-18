@@ -26,22 +26,23 @@ PrivateIndividual::PrivateIndividual ( const PrivateIndividual & unPrivateIndivi
 {
 }
 
-PrivateIndividual::PrivateIndividual (  std::string userId, std::string password, std::string role, std::string privateId, int points )
-    : User( userId, password, role ),
-      privateId( privateId ),
-      points( points ),
-      isReliable( true )
+PrivateIndividual::PrivateIndividual(std::string userId, std::string password,
+    std::string role, std::string privateId, int points, std::string sId)
+    : User(userId, password, role),
+      privateId(privateId),
+      sensorId(sId),
+      points(points),
+      isReliable(true)
 {
 }
 
-PrivateIndividual::PrivateIndividual ( )
-    : User( ),
-      privateId( "" ),
-      points( 0 ),
-      isReliable( true )
-{
-}
+PrivateIndividual::PrivateIndividual()
+    : User(), privateId(""), sensorId(""), points(0), isReliable(true) {}
 
-PrivateIndividual::~PrivateIndividual ( )
-{
-}
+PrivateIndividual::~PrivateIndividual() {}
+
+std::string PrivateIndividual::getSensorId() const { return sensorId; }
+int         PrivateIndividual::getPoints() const   { return points; }
+bool        PrivateIndividual::getIsReliable() const { return isReliable; }
+void        PrivateIndividual::addPoints(int n)    { points += n; }
+void        PrivateIndividual::ban()               { isReliable = false; points = 0; }

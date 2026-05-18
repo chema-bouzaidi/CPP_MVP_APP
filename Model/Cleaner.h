@@ -27,9 +27,14 @@ class Cleaner
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    float getCleanerRadius();
-    
-    bool isActiveAt(TimeStamp time);
+    float getCleanerRadius() const;
+    bool  isActiveAt(const TimeStamp& time) const;
+
+    std::string getCleanerId() const;
+    float       getLatitude() const;
+    float       getLongitude() const;
+    TimeStamp   getStartTime() const;
+    TimeStamp   getStopTime() const;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -47,7 +52,10 @@ public:
     // Contrat :
     //
 
-    Cleaner ( );
+    Cleaner(std::string cleanerId, float lat, float lon,
+            TimeStamp start, TimeStamp stop);
+
+    Cleaner();
     // Mode d'emploi :
     //
     // Contrat :

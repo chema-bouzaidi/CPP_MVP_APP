@@ -1,24 +1,25 @@
 #ifndef MEASUREMENT_H
-#define MEAASUREMENT_H
+#define MEASUREMENT_H
 
 #include <string>
-#include <ctime>
-#include TimeStamp.h
+#include "../TypeUtil/TimeStamp.h"
 
-using namespace std;
+class Measurement
+{
+private:
+    TimeStamp timestamp;
+    std::string sensorId;
+    std::string attributeId;
+    float value;
+public:
+    Measurement(const TimeStamp& ts, const std::string& sensorId,
+                const std::string& attributeId, float value);
+    Measurement();
 
-class Measurement {
-    private :
-        time_t timestamp;
-        string sensorID;
-        string attributeID;
-        float value;
-    public :
-        //constructeur 
-        Measurement(time_t timestamp,string sensorId, string attributeId,float value);
-        float getValue();
-        string getTimestamp();
-        string getSensorId();
-        string getAttributeId();
+    TimeStamp   getTimestamp()   const;
+    std::string getSensorId()    const;
+    std::string getAttributeId() const;
+    float       getValue()       const;
 };
-#endif
+
+#endif // MEASUREMENT_H

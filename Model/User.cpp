@@ -43,7 +43,6 @@ User::~User ( )
 }
 
 //------------------------------------------------------- Méthodes publiques
-std::string User::getRole ( )
-{
-    return role;
-}
+std::string User::getRole() const     { return role; }
+std::string User::getUserId() const   { return userId; }
+std::string User::getPassword() const { return password; }

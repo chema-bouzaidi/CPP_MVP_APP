@@ -23,7 +23,9 @@ class User
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    std::string getRole();
+    std::string getRole() const;
+    std::string getUserId() const;
+    std::string getPassword() const;
 
 
 //------------------------------------------------- Surcharge d'opérateurs

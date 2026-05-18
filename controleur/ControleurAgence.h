@@ -9,8 +9,8 @@
 
 class ControleurAgence : public Controleur {
 public:
-    ControleurAgence(InterfaceUtilisateur& vue, Modele& modele)
-        : Controleur(vue, modele) {}
+    ControleurAgence(InterfaceUtilisateur& vue, Modele& modele, User* user)
+        : Controleur(vue, modele), currentUser(user) {}
 
     void run();
     void analyzeSensorsData();
@@ -18,9 +18,9 @@ public:
     bool checkSensorFunctioning(const Sensor& s);
     void removeOutliers(const Sensor& s);
     void markSensorDefective(const Sensor& s);
-    list<Sensor*> findSimilarSensors(const Sensor& refSensor, const Period& period);
+    std::list<Sensor*> findSimilarSensors(const Sensor& refSensor, const Period& period);
 protected:
-    Agency currentAgency;
+    User* currentUser;
 };
 
 #endif

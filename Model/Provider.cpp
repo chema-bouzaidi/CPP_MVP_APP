@@ -1,53 +1,27 @@
-//---------- Réalisation de la classe <Provider> (fichier Provider.cpp) ----------------
-
 #include "Provider.h"
 
-
-//----------------------------------------------------------------- PUBLIC
-
-//------------------------------------------------- Surcharge d'opérateurs
-Provider & Provider::operator = ( const Provider & unProvider )
+Provider & Provider::operator=(const Provider& p)
 {
-    if ( this != &unProvider )
+    if (this != &p)
     {
-        providerId = unProvider.providerId;
-        name       = unProvider.name;
-        cleaners   = unProvider.cleaners;
+        User::operator=(p);
+        name     = p.name;
+        cleaners = p.cleaners;
     }
     return *this;
 }
 
-//-------------------------------------------- Constructeurs - destructeur
-Provider::Provider ( const Provider & unProvider )
-    : providerId( unProvider.providerId ),
-      name( unProvider.name ),
-      cleaners( unProvider.cleaners )
-{
-}
+Provider::Provider(const Provider& p)
+    : User(p), name(p.name), cleaners(p.cleaners) {}
 
-Provider::Provider ( std::string providerId, std::string name )
-    : providerId( providerId ),
-      name( name )
-{
-}
+Provider::Provider(std::string userId, std::string password, std::string n)
+    : User(userId, password, "provider"), name(n) {}
 
-Provider::Provider ( )
-    : providerId( "" ),
-      name( "" )
-{
-}
+Provider::Provider() : User(), name("") {}
 
-Provider::~Provider ( )
-{
-}
+Provider::~Provider() {}
 
-//------------------------------------------------------- Méthodes publiques
-std::list<Cleaner> Provider::getCleaners ( )
-{
-    return cleaners;
-}
-
-void Provider::addCleaner ( Cleaner cleaner )
-{
-    cleaners.push_back( cleaner );
-}
+const std::list<Cleaner>& Provider::getCleaners() const { return cleaners; }
+void Provider::addCleaner(Cleaner c)              { cleaners.push_back(c); }
+std::string Provider::getProviderId() const       { return getUserId(); }
+std::string Provider::getName() const             { return name; }
