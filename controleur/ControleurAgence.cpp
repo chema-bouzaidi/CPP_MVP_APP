@@ -12,7 +12,8 @@
 #include <algorithm>
 #include <utility>
 #include <cmath>
-#include <ctime>
+#include <chrono>
+typedef std::chrono::steady_clock SC;
 
 void ControleurAgence::run()
 {
@@ -45,15 +46,15 @@ void ControleurAgence::run()
             TimeStamp ts1(start), ts2(end);
             Period period(ts1, ts2);
 
-            clock_t t1 = clock();
+            SC::time_point t1 = SC::now();
             std::list<Sensor*> similar = findSimilarSensors(*s, period);
-            long ecoule1 = (clock() - t1) * 1000L 
+            std::chrono::duration<double> ecoule1 = SC::now() - t1;
 
             vue.displayTitle("Capteurs similaires a " + sId);
             int rank = 1;
             for (Sensor* sim : similar)
                 std::cout << "  " << rank++ << ". " << sim->getSensorId() << "\n";
-            std::cout << "Temps de calcul : " << ecoule1 << " ms\n";
+            std::cout << "Temps de calcul : " << ecoule1.count() << " s\n";
             break;
         }
         case 3:
@@ -92,14 +93,14 @@ void ControleurAgence::analyzeSensorsData()
     Period period(ts1, ts2);
 
     AirQualityCalculator calc;
-    clock_t t0 = clock();
+    SC::time_point t0 = SC::now();
     float avg = calc.computeAverageQuality(
         modele.getSensors(), modele.getMeasurements(), center, radius, period);
-    long ecoule = (clock() - t0) * 1000L 
+    std::chrono::duration<double> ecoule = SC::now() - t0;
 
     std::cout << "\nQualite moyenne de l'air (indice ATMO) : "
-              << std::fixed << avg << " / 10\n"
-              << "Temps de calcul : " << ecoule << " ms\n";
+              << std::fixed << avg << " / 6\n"
+              << "Temps de calcul : " << ecoule.count() << " s\n";
 
     // Descriptive label
     std::string label;
@@ -108,11 +109,13 @@ void ControleurAgence::analyzeSensorsData()
         std::cout << label << "\n";
         return;
     }
-    if      (avg <= 2) label = "Tres bon";
-    else if (avg <= 4) label = "Bon";
-    else if (avg <= 6) label = "Moyen";
-    else if (avg <= 8) label = "Mauvais";
-    else               label = "Tres mauvais";
+    if      (avg < 1) label = "Tres bon";
+    else if (avg < 2) label = "Bon";
+    else if (avg < 3) label = "Moyen";
+    else if (avg < 4) label = "Dégradé";
+    else if (avg < 5) label = "Mauvais";
+    else if (avg < 6) label = "Très mauvais";
+    else              label = "Extremement mauvais";
     std::cout << "Qualite : " << label << "\n";
 }
 
