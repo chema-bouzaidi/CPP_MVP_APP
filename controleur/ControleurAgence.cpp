@@ -164,7 +164,7 @@ std::vector<std::pair<float, Sensor*>> ControleurAgence::findSimilarSensors(
     const Sensor& refSensor, const Period& period)
 {
     AirQualityCalculator calc;
-    auto& allMeas = modele.getMeasurements();
+    const std::list<Measurement*>& allMeas = modele.getMeasurements();
 
     // Collect ref sensor measurements for the period
     std::list<Measurement*> refMeas;

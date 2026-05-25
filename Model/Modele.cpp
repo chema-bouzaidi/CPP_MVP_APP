@@ -93,10 +93,10 @@ void Modele::loadCSVData()
     }
 
     // 4. Create PrivateIndividual users
-    for (auto& entry : privateSensorMap)
+    for (std::map<std::string,std::string>::iterator it = privateSensorMap.begin(); it != privateSensorMap.end(); ++it)
     {
-        const std::string& sId  = entry.first;
-        const std::string& uId  = entry.second;
+        const std::string& sId  = it->first;
+        const std::string& uId  = it->second;
         users.push_back(new PrivateIndividual(uId, uId, "private", uId, 0, sId));
     }
 
