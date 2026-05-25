@@ -47,13 +47,13 @@ void ControleurAgence::run()
             Period period(ts1, ts2);
 
             SC::time_point t1 = SC::now();
-            std::list<Sensor*> similar = findSimilarSensors(*s, period);
+            std::vector<std::pair<float, Sensor*>> similar = findSimilarSensors(*s, period);
             std::chrono::duration<double> ecoule1 = SC::now() - t1;
 
             vue.displayTitle("Capteurs similaires a " + sId);
             int rank = 1;
-            for (Sensor* sim : similar)
-                std::cout << "  " << rank++ << ". " << sim->getSensorId() << "\n";
+            for (const std::pair<float, Sensor*> &p : similar)
+                std::cout << "  " << rank++ << ". " << p.second->getSensorId() << " — score = " << p.first << "\n";
             std::cout << "Temps de calcul : " << ecoule1.count() << " s\n";
             break;
         }
@@ -158,7 +158,7 @@ void ControleurAgence::markSensorDefective(const Sensor& s)
     vue.displayMessage("Capteur marque defectueux : " + s.getSensorId());
 }
 
-std::list<Sensor*> ControleurAgence::findSimilarSensors(
+std::vector<std::pair<float, Sensor*>> ControleurAgence::findSimilarSensors(
     const Sensor& refSensor, const Period& period)
 {
     AirQualityCalculator calc;
@@ -195,7 +195,7 @@ std::list<Sensor*> ControleurAgence::findSimilarSensors(
             return a.first < b.first;
         });
 
-    std::list<Sensor*> result;
-    for (auto& p : scored) result.push_back(p.second);
-    return result;
+    /*std::list<Sensor*> result;
+    for (auto& p : scored) result.push_back(p.second);*/
+    return scored;
 }

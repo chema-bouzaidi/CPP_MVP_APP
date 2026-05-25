@@ -1,6 +1,7 @@
 #ifndef CONTROLEURAGENCE_H
 #define CONTROLEURAGENCE_H
-#include <list>
+#include <vector>
+#include <algorithm>
 
 #include "Controleur.h"
 #include "../Model/Agency.h"
@@ -18,7 +19,7 @@ public:
     bool checkSensorFunctioning(const Sensor& s);
     void removeOutliers(const Sensor& s);
     void markSensorDefective(const Sensor& s);
-    std::list<Sensor*> findSimilarSensors(const Sensor& refSensor, const Period& period);
+    std::vector<std::pair<float, Sensor*>> findSimilarSensors(const Sensor& refSensor, const Period& period);
 protected:
     User* currentUser;
 };
