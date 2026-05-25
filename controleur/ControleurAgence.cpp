@@ -154,6 +154,7 @@ void ControleurAgence::markSensorDefective(const Sensor& s)
         if (ps) {
             ps->flagAsUnreliable();
             PrivateIndividual* pi = dynamic_cast<PrivateIndividual*>(modele.findUserById(ps->getOwnerId()));
+            ps->removeAbberantData();
             if (pi) pi->ban();
         }
     }
