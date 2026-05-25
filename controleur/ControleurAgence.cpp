@@ -2,6 +2,7 @@
 #include "../Model/Modele.h"
 #include "../Model/AirQualityCalculator.h"
 #include "../Model/PrivateSensor.h"
+#include "../Model/PrivateIndividual.h"
 #include "../Vue/InterfaceUtilisateur.h"
 #include "../TypeUtil/Coordinates.h"
 #include "../TypeUtil/Period.h"
@@ -94,6 +95,11 @@ void ControleurAgence::analyzeSensorsData()
 
     // Descriptive label
     std::string label;
+    if      (avg == 0){
+        label = "Aucun capteur trouve";
+        std::cout << label << "\n";
+        return;
+    }
     if      (avg <= 2) label = "Tres bon";
     else if (avg <= 4) label = "Bon";
     else if (avg <= 6) label = "Moyen";
@@ -131,7 +137,13 @@ void ControleurAgence::removeOutliers(const Sensor& s)
 void ControleurAgence::markSensorDefective(const Sensor& s)
 {
     Sensor* found = modele.findSensorById(s.getSensorId());
-    if (found) found->markDefective();
+    if (found) {
+        PrivateSensor* ps = dynamic_cast<PrivateSensor*>(found);
+        if (ps) ps->flagAsUnreliable();
+        removeOutliers(s);
+        PrivateIndividual* pi = dynamic_cast<PrivateIndividual*>(modele.findUserById(ps->getOwnerId()));
+        if (pi) pi->ban();
+    }
     vue.displayMessage("Capteur marque defectueux : " + s.getSensorId());
 }
 
