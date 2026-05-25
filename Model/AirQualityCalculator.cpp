@@ -105,18 +105,18 @@ float AirQualityCalculator::computeAverageQuality(
 float AirQualityCalculator::computeCleanerImpact(
     const Cleaner& cleaner,
     const std::list<Sensor*>& sensors,
-    const std::list<Measurement*>& allMeasurements) const
+    const std::list<Measurement*>& allMeasurements,
+    float radius) const
 {
     Coordinates pos(cleaner.getLatitude(), cleaner.getLongitude());
-    float r = cleaner.getCleanerRadius();
 
     Period beforePeriod(TimeStamp("2019-01-01 00:00:00"), cleaner.getStartTime());
     Period activePeriod(cleaner.getStartTime(), cleaner.getStopTime());
 
-    float atmoBefore = computeAverageQuality(sensors, allMeasurements, pos, r, beforePeriod);
-    float atmoDuring = computeAverageQuality(sensors, allMeasurements, pos, r, activePeriod);
+    float atmoBefore = computeAverageQuality(sensors, allMeasurements, pos, radius, beforePeriod);
+    float atmoDuring = computeAverageQuality(sensors, allMeasurements, pos, radius, activePeriod);
 
-    return atmoBefore - atmoDuring;  // positive = improvement
+    return atmoBefore - atmoDuring;
 }
 
 // ---- Cleaned radius ---------------------------------------------------------
@@ -130,11 +130,18 @@ float AirQualityCalculator::computeCleanedRadius(
     Period beforePeriod(TimeStamp("2019-01-01 00:00:00"), cleaner.getStartTime());
     Period activePeriod(cleaner.getStartTime(), cleaner.getStopTime());
 
+    float prevDiff = -1.0f;
+    bool foundSensors = false;
     for (float r = 1.0f; r <= 100.0f; r += 1.0f)
     {
         float before = computeAverageQuality(sensors, allMeasurements, pos, r, beforePeriod);
         float during = computeAverageQuality(sensors, allMeasurements, pos, r, activePeriod);
-        if (before - during < 0.5f) return r - 1.0f;
+        if (before == 0.0f && during == 0.0f) continue;
+        float diff = before - during;
+        if (foundSensors && std::abs(diff - prevDiff) < 0.05f)
+            return r - 1.0f;
+        prevDiff = diff;
+        foundSensors = true;
     }
-    return 100.0f;
+    return foundSensors ? 100.0f : 0.0f;
 }

@@ -25,3 +25,10 @@ const std::list<Cleaner>& Provider::getCleaners() const { return cleaners; }
 void Provider::addCleaner(Cleaner c)              { cleaners.push_back(c); }
 std::string Provider::getProviderId() const       { return getUserId(); }
 std::string Provider::getName() const             { return name; }
+
+bool Provider::ownsCleaner(const std::string& cleanerId) const
+{
+    for (const Cleaner& c : cleaners)
+        if (c.getCleanerId() == cleanerId) return true;
+    return false;
+}

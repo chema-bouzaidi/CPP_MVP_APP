@@ -108,8 +108,7 @@ void InterfaceUtilisateur::displayCleaners(const std::list<Cleaner*>& cleaners) 
                   << " | lat=" << c->getLatitude()
                   << " lon=" << c->getLongitude()
                   << " | actif du " << c->getStartTime().toString()
-                  << " au " << c->getStopTime().toString()
-                  << " | rayon=" << c->getCleanerRadius() << " km\n";
+                  << " au " << c->getStopTime().toString() << "\n";
     }
 }
 

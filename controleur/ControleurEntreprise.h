@@ -12,7 +12,7 @@ public:
         : Controleur(vue, modele), currentUser(user) {}
 
     void run();
-    Statistics analyzeCleanerImpact(const Cleaner& cleaner);
+    Statistics analyzeCleanerImpact(const Cleaner& cleaner, float radius);
     Statistics getCleanedRadius(const Cleaner& cleaner);
     Statistics getImprovementLevel(const Cleaner& cleaner);
 protected:

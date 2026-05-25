@@ -27,7 +27,6 @@ class Cleaner
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    float getCleanerRadius() const;
     bool  isActiveAt(const TimeStamp& time) const;
 
     std::string getCleanerId() const;

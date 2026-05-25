@@ -11,6 +11,7 @@ class Provider : public User
 public:
     const std::list<Cleaner>& getCleaners() const;
     void addCleaner(Cleaner cleaner);
+    bool ownsCleaner(const std::string& cleanerId) const;
 
     std::string getProviderId() const;   // same as getUserId()
     std::string getName() const;

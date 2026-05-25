@@ -24,10 +24,11 @@ public:
                                 const Coordinates& center, float radius,
                                 const Period& period) const;
 
-    // Air quality improvement (ATMO difference) due to a cleaner
+    // Air quality improvement (ATMO difference) due to a cleaner within given radius
     float computeCleanerImpact(const Cleaner& cleaner,
                                const std::list<Sensor*>& sensors,
-                               const std::list<Measurement*>& allMeasurements) const;
+                               const std::list<Measurement*>& allMeasurements,
+                               float radius) const;
 
     // Effective cleaned radius (km) around a cleaner
     float computeCleanedRadius(const Cleaner& cleaner,

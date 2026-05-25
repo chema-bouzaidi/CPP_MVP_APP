@@ -40,8 +40,6 @@ Cleaner::~Cleaner ( )
 }
 
 //------------------------------------------------------- Méthodes publiques
-float Cleaner::getCleanerRadius() const { return 5.0f; }  // 5 km radius of effect
-
 bool Cleaner::isActiveAt(const TimeStamp& time) const
 {
     return (startTime <= time) && (time <= stopTime);

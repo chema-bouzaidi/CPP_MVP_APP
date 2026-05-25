@@ -48,7 +48,13 @@ void ControleurEntreprise::run()
             std::string cId = vue.readString("ID du purificateur : ");
             Cleaner* c = modele.findCleanerById(cId);
             if (!c) { vue.displayError("Purificateur introuvable."); break; }
-            Statistics s = analyzeCleanerImpact(*c);
+            if (provider && !provider->ownsCleaner(cId))
+            {
+                vue.displayError("Acces refuse : ce purificateur n'appartient pas a votre entreprise.");
+                break;
+            }
+            float radius = vue.readFloat("Rayon d'analyse souhaite (km) : ");
+            Statistics s = analyzeCleanerImpact(*c, radius);
             vue.displayStatistics(s);
             break;
         }
@@ -79,19 +85,19 @@ void ControleurEntreprise::run()
     }
 }
 
-Statistics ControleurEntreprise::analyzeCleanerImpact(const Cleaner& cleaner)
+Statistics ControleurEntreprise::analyzeCleanerImpact(const Cleaner& cleaner, float radius)
 {
     AirQualityCalculator calc;
     SC::time_point t0 = SC::now();
     float impact = calc.computeCleanerImpact(
-        cleaner, modele.getSensors(), modele.getMeasurements());
+        cleaner, modele.getSensors(), modele.getMeasurements(), radius);
     std::chrono::duration<double> ecoule = SC::now() - t0;
     std::cout << "Temps de calcul (impact) : " << ecoule.count() << " s\n";
 
     Coordinates pos(cleaner.getLatitude(), cleaner.getLongitude());
     Period period(cleaner.getStartTime(), cleaner.getStopTime());
 
-    return Statistics(pos, cleaner.getCleanerRadius(), period, 0,
+    return Statistics(pos, radius, period, 0,
                       impact, "Impact ATMO du purificateur " + cleaner.getCleanerId());
 }
 
@@ -113,14 +119,16 @@ Statistics ControleurEntreprise::getCleanedRadius(const Cleaner& cleaner)
 
 Statistics ControleurEntreprise::getImprovementLevel(const Cleaner& cleaner)
 {
-    // Improvement level = ATMO improvement as percentage
     AirQualityCalculator calc;
     Coordinates pos(cleaner.getLatitude(), cleaner.getLongitude());
-    float r = cleaner.getCleanerRadius();
+
+    SC::time_point t0 = SC::now();
+    float r = calc.computeCleanedRadius(
+        cleaner, modele.getSensors(), modele.getMeasurements());
+
     Period beforePeriod(TimeStamp("2019-01-01 00:00:00"), cleaner.getStartTime());
     Period activePeriod(cleaner.getStartTime(), cleaner.getStopTime());
 
-    SC::time_point t0 = SC::now();
     float before = calc.computeAverageQuality(
         modele.getSensors(), modele.getMeasurements(), pos, r, beforePeriod);
     float during = calc.computeAverageQuality(
