@@ -128,7 +128,7 @@ void ControleurAgence::analyzePrivateSensors()
         if (!ps) continue;
         std::cout << "  Capteur prive : " << ps->getSensorId()
                   << " | proprietaire=" << ps->getOwnerId()
-                  << " | fiable=" << (ps->getIsReliable() ? "oui" : "NON")
+                  << " | fiable=" << (ps->getIsReliable() ? "Oui" : "Non")
                   << "\n";
     }
 }
@@ -149,11 +149,13 @@ void ControleurAgence::markSensorDefective(const Sensor& s)
 {
     Sensor* found = modele.findSensorById(s.getSensorId());
     if (found) {
+        found->markDefective();
         PrivateSensor* ps = dynamic_cast<PrivateSensor*>(found);
-        if (ps) ps->flagAsUnreliable();
-        removeOutliers(s);
-        PrivateIndividual* pi = dynamic_cast<PrivateIndividual*>(modele.findUserById(ps->getOwnerId()));
-        if (pi) pi->ban();
+        if (ps) {
+            ps->flagAsUnreliable();
+            PrivateIndividual* pi = dynamic_cast<PrivateIndividual*>(modele.findUserById(ps->getOwnerId()));
+            if (pi) pi->ban();
+        }
     }
     vue.displayMessage("Capteur marque defectueux : " + s.getSensorId());
 }
