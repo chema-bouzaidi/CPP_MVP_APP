@@ -21,8 +21,18 @@ float Coordinates::getLongitude() const { return longitude; }
 
 float Coordinates::distanceTo(const Coordinates& c) const
 {
-    // 1 degree latitude ≈ 111 km, 1 degree longitude ≈ 77 km (France)
-    float dy = (latitude  - c.latitude)  * 111.0f;
-    float dx = (longitude - c.longitude) * 77.0f;
-    return std::sqrt(dx*dx + dy*dy);
+    // formule de Haversine pour calculer la distance entre deux points sur terrre
+    const float R = 6371.0f;  // Rayon de la terre
+    const float toRad = 3.14f / 180.0f;
+
+    float lat1 = latitude    * toRad;
+    float lat2 = c.latitude  * toRad;
+    float dLat = (c.latitude  - latitude)  * toRad;
+    float dLon = (c.longitude - longitude) * toRad;
+
+    float a = std::sin(dLat/2) * std::sin(dLat/2)
+            + std::cos(lat1)   * std::cos(lat2)
+            * std::sin(dLon/2) * std::sin(dLon/2);
+
+    return R * 2* std::atan2(std::sqrt(a), std::sqrt(1.0f - a));
 }

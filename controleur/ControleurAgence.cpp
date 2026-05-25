@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <utility>
 #include <cmath>
+#include <ctime>
 
 void ControleurAgence::run()
 {
@@ -44,11 +45,15 @@ void ControleurAgence::run()
             TimeStamp ts1(start), ts2(end);
             Period period(ts1, ts2);
 
-            auto similar = findSimilarSensors(*s, period);
+            clock_t t1 = clock();
+            std::list<Sensor*> similar = findSimilarSensors(*s, period);
+            long ecoule1 = (clock() - t1) * 1000L 
+
             vue.displayTitle("Capteurs similaires a " + sId);
             int rank = 1;
             for (Sensor* sim : similar)
                 std::cout << "  " << rank++ << ". " << sim->getSensorId() << "\n";
+            std::cout << "Temps de calcul : " << ecoule1 << " ms\n";
             break;
         }
         case 3:
@@ -87,11 +92,14 @@ void ControleurAgence::analyzeSensorsData()
     Period period(ts1, ts2);
 
     AirQualityCalculator calc;
+    clock_t t0 = clock();
     float avg = calc.computeAverageQuality(
         modele.getSensors(), modele.getMeasurements(), center, radius, period);
+    long ecoule = (clock() - t0) * 1000L 
 
     std::cout << "\nQualite moyenne de l'air (indice ATMO) : "
-              << std::fixed << avg << " / 10\n";
+              << std::fixed << avg << " / 10\n"
+              << "Temps de calcul : " << ecoule << " ms\n";
 
     // Descriptive label
     std::string label;

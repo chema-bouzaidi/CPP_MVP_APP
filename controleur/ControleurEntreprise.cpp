@@ -7,6 +7,7 @@
 #include "../TypeUtil/Period.h"
 
 #include <iostream>
+#include <ctime>
 
 void ControleurEntreprise::run()
 {
@@ -80,8 +81,11 @@ void ControleurEntreprise::run()
 Statistics ControleurEntreprise::analyzeCleanerImpact(const Cleaner& cleaner)
 {
     AirQualityCalculator calc;
+    clock_t t0 = clock();
     float impact = calc.computeCleanerImpact(
         cleaner, modele.getSensors(), modele.getMeasurements());
+    long ecoule = (clock() - t0) * 1000L 
+    std::cout << "Temps de calcul (impact) : " << ecoule << " ms\n";
 
     Coordinates pos(cleaner.getLatitude(), cleaner.getLongitude());
     Period period(cleaner.getStartTime(), cleaner.getStopTime());
@@ -93,8 +97,11 @@ Statistics ControleurEntreprise::analyzeCleanerImpact(const Cleaner& cleaner)
 Statistics ControleurEntreprise::getCleanedRadius(const Cleaner& cleaner)
 {
     AirQualityCalculator calc;
+    clock_t t0 = clock();
     float radius = calc.computeCleanedRadius(
         cleaner, modele.getSensors(), modele.getMeasurements());
+    long ecoule = (clock() - t0) * 1000L 
+    std::cout << "Temps de calcul (rayon) : " << ecoule << " ms\n";
 
     Coordinates pos(cleaner.getLatitude(), cleaner.getLongitude());
     Period period(cleaner.getStartTime(), cleaner.getStopTime());
@@ -112,10 +119,13 @@ Statistics ControleurEntreprise::getImprovementLevel(const Cleaner& cleaner)
     Period beforePeriod(TimeStamp("2019-01-01 00:00:00"), cleaner.getStartTime());
     Period activePeriod(cleaner.getStartTime(), cleaner.getStopTime());
 
+    clock_t t0 = clock();
     float before = calc.computeAverageQuality(
         modele.getSensors(), modele.getMeasurements(), pos, r, beforePeriod);
     float during = calc.computeAverageQuality(
         modele.getSensors(), modele.getMeasurements(), pos, r, activePeriod);
+    long ecoule = (clock() - t0) * 1000L 
+    std::cout << "Temps de calcul (amelioration) : " << ecoule << " ms\n";
 
     float pct = (before > 0) ? ((before - during) / before) * 100.0f : 0.0f;
 
