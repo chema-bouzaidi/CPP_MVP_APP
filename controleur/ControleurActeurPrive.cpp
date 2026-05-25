@@ -90,6 +90,6 @@ void ControleurActeurPrive::consultSensorMeasurements()
     if (meas.empty())
         vue.displayMessage("Aucune mesure pour cette periode.");
 
-    // Reward: add points for consulting data (engagement)
-    currentUser->addPoints(1);
+    if (currentUser->getIsReliable())
+        currentUser->addPoints(1);
 }

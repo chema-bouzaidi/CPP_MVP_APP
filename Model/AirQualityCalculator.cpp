@@ -130,7 +130,7 @@ float AirQualityCalculator::computeCleanedRadius(
     Period beforePeriod(TimeStamp("2019-01-01 00:00:00"), cleaner.getStartTime());
     Period activePeriod(cleaner.getStartTime(), cleaner.getStopTime());
 
-    float prevDiff = -1.0f;
+    float prevDiff = 0.0f;
     bool foundSensors = false;
     for (float r = 1.0f; r <= 100.0f; r += 1.0f)
     {
@@ -138,10 +138,17 @@ float AirQualityCalculator::computeCleanedRadius(
         float during = computeAverageQuality(sensors, allMeasurements, pos, r, activePeriod);
         if (before == 0.0f && during == 0.0f) continue;
         float diff = before - during;
-        if (foundSensors && std::abs(diff - prevDiff) < 0.05f)
-            return r - 1.0f;
-        prevDiff = diff;
-        foundSensors = true;
+        if (!foundSensors)
+        {
+            if (std::abs(diff) < 0.05f) return 0.0f;
+            foundSensors = true;
+            prevDiff = diff;
+        }
+        else
+        {
+            if (std::abs(diff - prevDiff) < 0.05f) return r - 1.0f;
+            prevDiff = diff;
+        }
     }
     return foundSensors ? 100.0f : 0.0f;
 }

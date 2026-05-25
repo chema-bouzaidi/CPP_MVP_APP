@@ -19,7 +19,7 @@ void ControleurAdmin::run()
     {
         int choice = vue.displayMenu("Menu Admin",
             {"Lister les utilisateurs",
-             "Creer un utilisateur (demo)",
+             "Creer un utilisateur",
              "Supprimer un utilisateur",
              "Bannir un utilisateur (marquer hors service)",
              "Se deconnecter"});

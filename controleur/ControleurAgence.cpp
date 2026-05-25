@@ -173,14 +173,15 @@ std::vector<std::pair<float, Sensor*>> ControleurAgence::findSimilarSensors(
         if (m->getSensorId() == refSensor.getSensorId() &&
             period.contains(m->getTimestamp()))
             refMeas.push_back(m);
+            
 
     float refATMO = static_cast<float>(calc.computeATMO(refMeas));
 
-    // Score each other sensor
     std::vector<std::pair<float, Sensor*>> scored;
     for (Sensor* s : modele.getSensors())
     {
         if (s->getSensorId() == refSensor.getSensorId()) continue;
+        if (!s->getIsFunctional()) continue;
 
         std::list<Measurement*> sMeas;
         for (Measurement* m : allMeas)
